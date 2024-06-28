@@ -7,7 +7,7 @@
 
 
 
-![image-20240628152656466](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628152656466.png)
+![image-20240628152656466](assets/image-20240628152656466.png)
 
 El primer cuadro es para introducir el código fuente, el segundo de símbolos muestra cada simbolo que fue extraído del código. Por último el árbol de sintáxis, muestra únicamente cada nodo y sus hijos. La aplicación fue hecha en Windows Forms (.NET Framework 4.8).
 
@@ -229,28 +229,28 @@ Las reglas de la validación se encuentran en la clase: `ASTExpresionNode`, son 
 
 ### Formula
 
-![image-20240628161834507](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628161834507.png)
+![image-20240628161834507](assets/image-20240628161834507.png)
 
 ### Escáner de tokens
 
 Se encarga de extraer todos los tokens. Algunos en esta pantalla fueron agregados como prueba, pero no forman parte del vocabulario de esta versión.
 
-![image-20240628162037898](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628162037898.png)
+![image-20240628162037898](assets/image-20240628162037898.png)
 
 ### Analizador léxico
 
 Genera todos los tokens.
 
-![image-20240628162051976](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628162051976.png)
+![image-20240628162051976](assets/image-20240628162051976.png)
 
 ### Analizar sintáctico
 
 Este es construye el AST partiendo de todos los tokens. Cuando detecta un simbolo de apertura los agrega como hijos del nodo, y cuando detecta un simbolo de clausura, regresa al nodo padre.
 
-![image-20240628162104447](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628162104447.png)
+![image-20240628162104447](assets/image-20240628162104447.png)
 
 ### Formulario principal
 
 Este ejecyta todos los pasos y muestra los resultados a los controles de texto y el control de árbol. Un mensaje de error aparecerá cuando existan errores de acuerdo a las reglas de validadación definidas más arriba.
 
-![image-20240628162122233](C:\Users\da227\Documents\GitHub\practica-compiladores-2\assets\image-20240628162122233.png)
+![image-20240628162122233](assets/image-20240628162122233.png)
