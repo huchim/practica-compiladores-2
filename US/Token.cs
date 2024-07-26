@@ -1,7 +1,16 @@
-﻿namespace Compiladores.US
+﻿using System;
+
+namespace Compiladores.US
 {
     internal class Token
     {
+        public Token(int start, int endIndex, Symbol symbol = null)
+        {
+            Symbol = symbol ?? new Symbol("EXPR", "");
+            Length = endIndex - start;
+            StartIndex = start;
+        }
+
         public Token(int start, Symbol symbol = null)
         {
             Symbol = symbol ?? new Symbol("EXPR", "");

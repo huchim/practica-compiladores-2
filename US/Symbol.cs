@@ -1,4 +1,8 @@
-﻿namespace Compiladores.US
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
+
+namespace Compiladores.US
 {
     /// <summary>
     /// Representa un símbolo terminal.
@@ -12,6 +16,13 @@
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Symbol"/>.
         /// </summary>
+        public Symbol(): this(string.Empty, string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Symbol"/>.
+        /// </summary>
         /// <param name="name">Nombre.</param>
         /// <param name="value">Valor.</param>
         /// <param name="isRegularExpression">Indica si el valor es una expresión regular.</param>
@@ -19,7 +30,7 @@
         public Symbol(
             string name,
             string value,
-            bool isRegularExpression = false,
+            bool isRegularExpression = true,
             string[] others = null)
         {
             Name = name;
@@ -27,6 +38,11 @@
             IsRegularExpression = isRegularExpression;
             Others = others ?? new string[0];
         }
+
+        /// <summary>
+        /// Obtiene o establece el terminador del token.
+        /// </summary>
+        public string Terminator { get; set; }
 
         public bool IsOperator { get; set; }
 
@@ -68,23 +84,9 @@
         /// </summary>
         /// <param name="sourceCode">Código fuente.</param>
         /// <returns>Devuelve verdadero si esta terminal se encuentra en el código fuente.</returns>
-        public bool IsMatch(SourceCode sourceCode)
+        public bool IsMatch(string sourceCode)
         {
-            // Verificar si la palabra se encuentra en el texto.
-            if (!IsRegularExpression && !sourceCode.Contains(Value.ToCharArray()))
-            {
-                // La palabra no se encuentra en el texto.
-                return false;
-            }
-
-            // Verificar si la expresión regular no coincide.
-            if (IsRegularExpression && !sourceCode.Contains(Value))
-            {
-                // La palabra no se encuentra en el texto.
-                return false;
-            }
-
-            return true;
+            return IsRegularExpression ? Regex.IsMatch(sourceCode, $"^{Value}$") : (sourceCode == Value);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Compiladores.US
 {
@@ -15,29 +17,68 @@ namespace Compiladores.US
         public Scanner()
         {
             // Definimos la lista de tokens que se pueden reconocer.
-            _grammar = new List<Symbol>() {
+            _grammar = new List<Symbol>() {                
+                // Identificadores
+                new Symbol("ID", "[_a-zA-Z][_a-zA-Z0-9]*"),
 
-                new Symbol("WHITESPACE", " ") { IsWhiteSpace = true },
-                new Symbol("DOT", "."),
-                new Symbol("NUMBER", "[0-9]+", true, new string[] { "DOT", "NUMBER" }),
-                new Symbol("PAR_OPEN", "(") { IsOpen = true },
-                new Symbol("PAR_CLOSE", ")") { IsClose = true },
+                // Datos compuestos
+                new Symbol("FLOAT", "{DIGIT}+(.{DIGIT}+)?", true, new string[] { "DOT", "NUMBER" }),
+                new Symbol("NUMBER", "{DIGIT}+", true, new string[] { "DOT", "NUMBER" }),
                 
-                // Operaciones permitidas
-                new Symbol("PLUS", "+") { IsOperator = true },
-                new Symbol("MINUS", "-") { IsOperator = true },
-                new Symbol("MULTIPLY", "*") { IsOperator = true },
-                new Symbol("DIVIDE", "/") { IsOperator = true },
+                // Datos primitivos
+                new Symbol("DIGIT", "[0-9]", true, new string[] { "DOT", "NUMBER" }),
+                new Symbol("CARACTER", "[a-zA-Z]", true, new string[] { "NUMBER", "CARACTER" }),
+                
+                // Operadores
+                new Symbol("EQUAL", "=", isRegularExpression: false),
+                new Symbol("PLUS", "+", isRegularExpression: false) { IsOperator = true },
+                new Symbol("MINUS", "-", isRegularExpression: false) { IsOperator = true },
+                new Symbol("MULTIPLY", "*", isRegularExpression: false) { IsOperator = true },
+                new Symbol("DIVIDE", "/", isRegularExpression: false) { IsOperator = true },
+                new Symbol("DOT", ".", isRegularExpression: false) { IsOperator = true },
+                
+                // Parentesis
+                new Symbol("PAR_OPEN", "(", isRegularExpression: false) { IsOpen = true },
+                new Symbol("PAR_CLOSE", ")", isRegularExpression: false) { IsClose = true },
 
-                // Sin usar, solo de ejemplo.
-                new Symbol("PRINT", "print"),
-                new Symbol("COMMA", ","),
-                new Symbol("EQUAL", "="),
-                new Symbol("TERMINATOR", ";"),
-                new Symbol("CARACTER", "[a-zA-Z]+", true, new string[] { "NUMBER", "CARACTER" }),
-                new Symbol("LF", "\n") { IsWhiteSpace = true },
-                new Symbol("CR", "\r", false, new string[] { "LF" }) { IsWhiteSpace = true },
+                // Terminadores
+                new Symbol("WHITESPACE", " ", isRegularExpression: false) { IsWhiteSpace = true },
+                new Symbol("NEW_LINE", "{CR}{LF}", isRegularExpression: false),
+                new Symbol("LF", "\n", isRegularExpression: false) { IsWhiteSpace = true },
+                new Symbol("CR", "\r", isRegularExpression: false, new string[] { "LF" }) { IsWhiteSpace = true },
+                new Symbol("EOF", "\0", isRegularExpression: false),
             };
+        }
+
+        /// <summary>
+        /// Devuelve la lista de simbolos.
+        /// </summary>
+        /// <remarks>
+        /// Los simbolos son definidos referenciando a otros simbolos, por lo que este
+        /// método expande los simbolos. Ejemplo: {DIGIT}+ se expande a [0-9]+.
+        /// </remarks>
+        /// <returns></returns>
+        internal List<Symbol> GetSymbols()
+        {
+            var symbols = new List<Symbol>();
+
+            foreach (var symbol in _grammar)
+            {
+                var value = symbol.Value;
+
+                foreach (var other in _grammar)
+                {
+                    value = value.Replace("{" + other.Name + "}", other.Value);
+                }
+
+                symbols.Add(new Symbol(
+                    symbol.Name,
+                    value,
+                    symbol.IsRegularExpression,
+                    symbol.Others));
+            }
+
+            return symbols;
         }
 
         /// <summary>
@@ -47,41 +88,89 @@ namespace Compiladores.US
         /// <returns>Lista de tokens.</returns>
         internal IEnumerable<Token> GetLexemas(SourceCode sourceCode)
         {
+            // Obtenemos la lista de simbolos disponibles.
+            var symbols = GetSymbols();
+
+            // Cuando detectamos un simbolo, almacenamos el cursor donde fue detectado.
+            // Esta posición es reiniciada cuando se detecta un simbolo distinto.
+            var startIndex = 0;
+
+            // Almacena el simbolo actual, este se va acumulando hasta que se detecte un simbolo distinto.
+            Symbol currentSymbol = new Symbol();
+
             // Recorremos el código fuente hasta que se termine.
             while (!sourceCode.IsEOF())
             {
-                // Marca si se encontró la palabra o la palabra no forma parte del vocabulario.
+                // Indica si al final el texto acumulado es válido dentro de la lista de simbolos.
                 var tokenFound = false;
 
                 // Recorremos cada elemento del vocabulario.
-                foreach (var gr in _grammar)
+                foreach (var symbol in symbols)
                 {
-                    if (!gr.IsMatch(sourceCode))
+                    // Evaluaremos el texto acumulado con el simbolo actual.
+                    var accText = sourceCode.Extract(startIndex, sourceCode.Position - startIndex + 1);
+                    var isMatch = symbol.IsMatch(accText);
+
+                    Console.WriteLine("-> \"{0}\" ({1})", accText, symbol.Name);
+
+                    if (!isMatch)
                     {
-                        continue;
+                        // Si el texto acumulado no coincide con el simbolo actual, entonces evaluaremos un solo carácter.
+                        // ya que este puede ser un simbolo terminados como un espacio o un salto de línea.
+                        accText = sourceCode.Extract(sourceCode.Position, 1);
+                        Console.WriteLine("?? \"{0}\" ({1})", accText, symbol.Name);
+
+                        if (!symbol.IsMatch(accText))
+                        {
+                            // No se encontró un simbolo, continuamos con el siguiente.
+                            continue;
+                        }
                     }
 
-                    var token = new Token(sourceCode.Position, gr);
+                    // Si no existe un simbolo en la primera vez, se asigna este.
+                    // La primera vez que se recorre la lista de símbolos, este no se ha definido.
+                    if (currentSymbol.Name == string.Empty)
+                    {
+                        // Inicializamos los datos del simbolo.
+                        currentSymbol = symbol;
+                    }
 
-                    // Movemos el cursor a donde finaliza este token.
-                    // El cursor es la posición del caracter que estamos
-                    // evaluando.
-                    sourceCode.Move(token.Length);
+                    // Este simbolo tiene una coincidencia con el código, hay que verificar si pertenece
+                    // al mismo simbolo que estamos evaluando o este otro que lo termine.
+                    // ? Verificar que el simbolo actual coincida con el simbolo acumulado.
+                    if (currentSymbol.Name == symbol.Name)
+                    {
+                        // Este simbolo ha coincidido con el actual. Mantenemos el caracter inicial.
+                        Console.Write("--");
+                        tokenFound = true;
+                        sourceCode.Move();
 
+                        break;
+                    }
+
+                    // Este es un nuevo símbolo, debemos devolver el actual y asignar el contador.
+                    Console.Write("**");
+                    yield return new Token(startIndex, sourceCode.Position, currentSymbol);
+
+                    // Definimos el nuevo caracter inicial.
+                    currentSymbol = symbol;
+                    startIndex = sourceCode.Position;
                     tokenFound = true;
-                    yield return token;
-
-                    // Como las palabras están ordenadas y las primeras
-                    // tienen más prioridad que las últimas y ya encontramos
-                    // un token, vamos a reiniciar la búsqueda de tokens.
+                    sourceCode.Move();
                     break;
                 }
 
-                // Los espacios en blanco son ignorados.
+                // Verificamos si queda pendiente un token
+                // En este punto no existen carácteres que puedan ser evaluados, así que el último (activo)
+                // es el que se devolverá.
+                if (currentSymbol.Name != string.Empty && sourceCode.IsEOF())
+                {
+                    yield return new Token(startIndex, sourceCode.Position, currentSymbol);
+                }
+
                 if (!tokenFound)
                 {
-                    // Si la posición no tiene algún token, entonces arrojamos una excepción.
-                    throw new System.Exception($"Token no reconocido en la posición {sourceCode.Position}");
+                    throw new Exception($"Token no reconocido en la posición {sourceCode.Position}: {sourceCode.Current}");
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Compiladores.US
 {
@@ -57,6 +58,18 @@ namespace Compiladores.US
         }
 
         /// <summary>
+        ///  Extrae una porción del código de acuerdo al token proporcionado.
+        /// </summary>
+        /// <param name="startIndex">Posición inicial.</param>
+        /// <param name="length">Longitud esperada.</param>
+        /// <returns>Una porción del código.</returns>
+        internal string Extract(int startIndex, int length = 1)
+        {
+            // Devolver un subconjunto del código, de acuerdo a la posición inicial y la longitud.
+            return Code.Substring(startIndex, length);
+        }
+
+        /// <summary>
         ///  Mueve el cursor una posición hacia adelante.
         /// </summary>
         internal void Move()
@@ -73,6 +86,7 @@ namespace Compiladores.US
             _chx += positions;
         }
 
+        [Obsolete("Se debe mover la lógica de este elemento.")]
         internal bool Contains(string pattern)
         {
             // Verificar si el código fuente aún tiene suficientes caracteres...
@@ -91,6 +105,7 @@ namespace Compiladores.US
         /// </summary>
         /// <param name="c">Carácteres a comparar.</param>
         /// <returns>Devuelve <see langword="true"/> si coincide.</returns>
+        [Obsolete("Se debe mover la lógica de este elemento.")]
         internal bool Contains(char[] c)
         {
             // Verificar si el código fuente aún tiene suficientes caracteres para esta palabra.
