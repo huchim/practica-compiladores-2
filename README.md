@@ -11,6 +11,15 @@
 
 El primer cuadro es para introducir el código fuente, el segundo de símbolos muestra cada simbolo que fue extraído del código. Por último el árbol de sintáxis, muestra únicamente cada nodo y sus hijos. La aplicación fue hecha en Windows Forms (.NET Framework 4.8).
 
+
+
+El rol del analizador léxico es identificar y clasificar los elementos del código fuente dentro de distintos tokens, reconocer y reporar errores léxicos, como carácteres ilegales o palabras reservadas mal escritas. Este produce lexemas que son componentes individuales de un programa fuente, las cuales deben clasificarse de acuerdo a una palabra clave, un operador, un identificador, un número, etc. Estos lexemas y su clasificación se denominan tokens, por ejemplo: `1|NUMBER, +|OPERATOR, 2|NUMBER`.
+
+El rol del analizador sintáctico es analizar la estructura de una oración, basado en las reglas de la gramática formal. Sus responsabilidades primarias incluyen examinar la secuencia de tokens generadas por el analizador lexico para determinar que se ajusta a las reglas de la gramática.
+
+El rol del analizador semántico es analizar el significado de las oraciones y la lógica.
+
+
 ## Lenguaje
 
 ```

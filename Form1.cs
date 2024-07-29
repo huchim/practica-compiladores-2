@@ -24,12 +24,12 @@ namespace Compiladores
             {
                 // Paso 1: Obtener el código fuente.
                 // La clase permite ir carácter por carácter dentro del texto de entrada.
-                var sourceCode = new SourceCode(txtCode.Text);
+                var sourceCode = SourceCode.CreateFromString(txtCode.Text);
 
                 // Paso 2: El escaner se encarga de obtener los tokens en su forma más básica.
                 // 1.3 devolverá 3 tokens: (1, ., 3), es decir un número, un punto y otro número.
                 var scanner = new Scanner();
-                var lexemas = scanner.GetLexemas(sourceCode);
+                var lexemas = scanner.Tokenize(sourceCode);
 
                 // Paso 3: El analizador se encarga de unir los tokens comúnes.
                 // Siguiendo el ejemplo anterior, 1.3 se unirá en un solo token NUMBER cuyo valor será 1.3.
