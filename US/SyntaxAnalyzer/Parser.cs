@@ -28,7 +28,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         /// var : ID ASSIGN expr SEMI
         /// </remarks>
         /// <returns></returns>
-        private Node Assign()
+        internal Node Assign()
         {
             Eat(TokenType.KeywordSet);
 
@@ -49,51 +49,12 @@ namespace Compiladores.US.SyntaxAnalyzer
         ///
         /// </summary>
         /// <remarks>
-        /// type : type ID AS TYPE SEMI
-        /// </remarks>
-        /// <returns></returns>
-        private Node TypeDeclaration()
-        {
-            Eat(TokenType.KeywordType);
-            var id = new Identifier(Pop());
-            Eat(TokenType.KeywordAs);
-            var token = Pop();
-            Eat(TokenType.Semicolon);
-
-            return new DeclarationExpression()
-            {
-                Identifier = id,
-                Name = token.Lexema.Value,
-            };
-        }
-
-        /// <summary>
-        /// Verifica que el token actual sea del tipo especificado y avanza el enumerador.
-        /// </summary>
-        /// <param name="tokenType"></param>
-        /// <exception cref="System.Exception"></exception>
-        private void Eat(TokenType tokenType)
-        {
-            var token = Peek();
-
-            if (token.Category.TokenType != tokenType)
-            {
-                throw new System.Exception($"Unexpected token, expected {tokenType} but {token.Category.TokenType}");
-            }
-
-            Pop();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
         /// expr   : term ((PLUS | MINUS) term)*
         /// term   : factor((MUL | DIV) factor)*
         /// factor : INTEGER | LPAREN expr RPAREN
         /// </remarks>
         /// <returns></returns>
-        private Node Expr()
+        internal Node Expr()
         {
             var node = Term();
 
@@ -121,7 +82,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         /// </remarks>
         /// <param name="tokens"></param>
         /// <param name="exp"></param>
-        private Node Factor()
+        internal Node Factor()
         {
             var token = Peek();
 
@@ -156,6 +117,117 @@ namespace Compiladores.US.SyntaxAnalyzer
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <remarks>
+        /// program ::= statement*
+        /// </remarks>
+        /// <returns></returns>
+        internal Program Program()
+        {
+            // Creamos el programa.
+            var program = new Program();
+
+            // Inicializamos el enumerador.
+            _tokens.MoveNext();
+
+            while (!Peek().IsEOF)
+            {
+                program.Body.Add(StatementExpr());
+            }
+
+            return program;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <remarks>
+        /// compound : var | expr | type
+        /// </remarks>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
+        internal Node StatementExpr()
+        {
+            switch (Peek().Category.TokenType)
+            {
+                case TokenType.KeywordSet:
+                    return Assign();
+
+                case TokenType.KeywordType:
+                    return TypeDeclaration();
+
+                default:
+                    return Expr();
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <remarks>
+        /// term : factor ((MUL | DIV) factor)*
+        /// </remarks>
+        /// <returns></returns>
+        internal Node Term()
+        {
+            var node = Factor();
+
+            while (Peek().Category.TokenType == TokenType.OperatorMultiply || Peek().Category.TokenType == TokenType.OperatorDivide)
+            {
+                var token = Pop();
+                var right = Factor();
+
+                node = new BinaryExpression()
+                {
+                    Left = node as Expression,
+                    Operator = token.Category.TokenType,
+                    Right = right as Expression,
+                };
+            }
+
+            return node;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <remarks>
+        /// type : type ID AS TYPE SEMI
+        /// </remarks>
+        /// <returns></returns>
+        internal Node TypeDeclaration()
+        {
+            Eat(TokenType.KeywordType);
+            var id = new Identifier(Pop());
+            Eat(TokenType.KeywordAs);
+            var token = Pop();
+            Eat(TokenType.Semicolon);
+
+            return new DeclarationExpression()
+            {
+                Identifier = id,
+                Name = token.Lexema.Value,
+            };
+        }
+
+        /// <summary>
+        /// Verifica que el token actual sea del tipo especificado y avanza el enumerador.
+        /// </summary>
+        /// <param name="tokenType"></param>
+        /// <exception cref="System.Exception"></exception>
+        private void Eat(TokenType tokenType)
+        {
+            var token = Peek();
+
+            if (token.Category.TokenType != tokenType)
+            {
+                throw new System.Exception($"Unexpected token, expected {tokenType} but {token.Category.TokenType}");
+            }
+
+            Pop();
+        }
+        /// <summary>
         /// Devuelve el token actual sin avanzar el enumerador.
         /// </summary>
         /// <returns></returns>
@@ -175,76 +247,6 @@ namespace Compiladores.US.SyntaxAnalyzer
             _tokens.MoveNext();
 
             return token;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
-        /// program ::= statement*
-        /// </remarks>
-        /// <returns></returns>
-        private Program Program()
-        {
-            // Creamos el programa.
-            var program = new Program();
-
-            // Inicializamos el enumerador.
-            _tokens.MoveNext();
-
-            while (!Peek().IsEOF)
-            {
-                program.Body.Add(StatementExpr());
-            }
-
-            return program;
-        }
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
-        /// compound : var | expr | type
-        /// </remarks>
-        /// <returns></returns>
-        /// <exception cref="System.Exception"></exception>
-        private Node StatementExpr()
-        {
-            switch (Peek().Category.TokenType)
-            {
-                case TokenType.KeywordSet:
-                    return Assign();
-                case TokenType.KeywordType:
-                    return TypeDeclaration();
-                default:
-                    return Expr();
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
-        /// term : factor ((MUL | DIV) factor)*
-        /// </remarks>
-        /// <returns></returns>
-        private Node Term()
-        {
-            var node = Factor();
-
-            while (Peek().Category.TokenType == TokenType.OperatorMultiply || Peek().Category.TokenType == TokenType.OperatorDivide)
-            {
-                var token = Pop();
-                var right = Factor();
-
-                node = new BinaryExpression()
-                {
-                    Left = node as Expression,
-                    Operator = token.Category.TokenType,
-                    Right = right as Expression,
-                };
-            }
-
-            return node;
         }
     }
 }
