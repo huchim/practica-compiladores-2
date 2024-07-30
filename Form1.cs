@@ -24,8 +24,8 @@ namespace Compiladores
                 var sourceCode = SourceCode.CreateFromString(txtCode.Text);
 
                 // Paso 2: El escaner se encarga de obtener los tokens en su forma más básica.
-                var scanner = new Lexer();
-                var tokens = scanner.Tokenize(sourceCode);
+                var lexer = new Lexer();
+                var tokens = lexer.Tokenize(sourceCode);
 
                 // Una vez con todos los tokens, se procede a construir la tabla de sintaxis.
                 var parser = new Parser(tokens);
