@@ -1,6 +1,5 @@
 ﻿using Compiladores.US.LexicalAnalyzer;
 using Compiladores.US.SyntaxAnalyzer.Expressions;
-using System;
 using System.Collections.Generic;
 
 namespace Compiladores.US.SyntaxAnalyzer
