@@ -1,0 +1,2 @@
+type m as int;
+set m = 3 + 2 * 5;

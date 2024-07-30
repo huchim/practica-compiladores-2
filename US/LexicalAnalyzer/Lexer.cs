@@ -30,19 +30,23 @@ namespace Compiladores.US.LexicalAnalyzer
                 TokenDefinition.Factory.Create(TokenType.KeywordWhile, "^while$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordFn, "^fn$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordReturn, "^return$"),
-                TokenDefinition.Factory.Create(TokenType.Var, "^var$"),
+                TokenDefinition.Factory.Create(TokenType.KeywordSet, "^set$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordConst, "^const$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordIn, "^in$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordAs, "^as$"),
                 TokenDefinition.Factory.Create(TokenType.KeywordClass, "^class$"),
+                TokenDefinition.Factory.Create(TokenType.KeywordType, "^type$"),
+
+                // Tipos
+                TokenDefinition.Factory.Create(TokenType.Type, "^(int|float|string)$"),
 
                 // Otras palabras reservadas
                 TokenDefinition.Factory.Create(TokenType.Keyword, "^(false|true)$"),
                 TokenDefinition.Factory.Create(TokenType.Keyword, "^(float|int|string|bool)$"),
 
                 TokenDefinition.Factory.Create(TokenType.Identifier, "^[_a-zA-Z][_a-zA-Z0-9]*$"),
-                TokenDefinition.Factory.Create(TokenType.TypeFloat, "^[0-9]+.[0-9]+$"),
-                TokenDefinition.Factory.Create(TokenType.TypeInteger, "^[0-9]+$"),
+                TokenDefinition.Factory.Create(TokenType.Float, "^[0-9]+.[0-9]+$"),
+                TokenDefinition.Factory.Create(TokenType.Integer, "^[0-9]+$"),
                 TokenDefinition.Factory.Create(TokenType.Number, "^[0-9]$"),
                 TokenDefinition.Factory.Create(TokenType.Character, "^[a-zA-Z]$"),
 

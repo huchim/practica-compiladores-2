@@ -40,21 +40,24 @@
             this.cmdParse = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.categoríaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lexemaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.posiciónDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.longitudDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.astCode = new System.Windows.Forms.TextBox();
+            this.cmbExamples = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmdLoad = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -129,9 +132,9 @@
             // 
             // cmdParse
             // 
-            this.cmdParse.Location = new System.Drawing.Point(414, 605);
+            this.cmdParse.Location = new System.Drawing.Point(398, 602);
             this.cmdParse.Name = "cmdParse";
-            this.cmdParse.Size = new System.Drawing.Size(75, 23);
+            this.cmdParse.Size = new System.Drawing.Size(91, 23);
             this.cmdParse.TabIndex = 19;
             this.cmdParse.Text = "Analizar";
             this.cmdParse.UseVisualStyleBackColor = true;
@@ -157,17 +160,6 @@
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Tabla de simbolos";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.astCode);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(475, 576);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "Tabla de tipos";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -217,6 +209,17 @@
             this.longitudDataGridViewTextBoxColumn.HeaderText = "Longitud";
             this.longitudDataGridViewTextBoxColumn.Name = "longitudDataGridViewTextBoxColumn";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.astCode);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(475, 576);
+            this.tabPage3.TabIndex = 1;
+            this.tabPage3.Text = "Tabla de tipos";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
             // astCode
             // 
             this.astCode.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -227,16 +230,48 @@
             this.astCode.Size = new System.Drawing.Size(469, 570);
             this.astCode.TabIndex = 21;
             // 
-            // Form2
+            // cmbExamples
+            // 
+            this.cmbExamples.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbExamples.FormattingEnabled = true;
+            this.cmbExamples.Location = new System.Drawing.Point(77, 602);
+            this.cmbExamples.Name = "cmbExamples";
+            this.cmbExamples.Size = new System.Drawing.Size(218, 21);
+            this.cmbExamples.TabIndex = 23;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 605);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Ejemplos:";
+            // 
+            // cmdLoad
+            // 
+            this.cmdLoad.Location = new System.Drawing.Point(301, 602);
+            this.cmdLoad.Name = "cmdLoad";
+            this.cmdLoad.Size = new System.Drawing.Size(91, 23);
+            this.cmdLoad.TabIndex = 25;
+            this.cmdLoad.Text = "Cargar ejemplo";
+            this.cmdLoad.UseVisualStyleBackColor = true;
+            this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
+            // 
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(990, 640);
+            this.Controls.Add(this.cmdLoad);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cmbExamples);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.cmdParse);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form2";
+            this.Name = "Form1";
             this.Text = "Universidad del Sur : (Karen, Adirlan y Carlos)";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -244,10 +279,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).EndInit();
             this.tabControl2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -271,5 +307,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn longitudDataGridViewTextBoxColumn;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox astCode;
+        private System.Windows.Forms.ComboBox cmbExamples;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button cmdLoad;
     }
 }

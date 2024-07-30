@@ -61,5 +61,49 @@ namespace Compiladores
                 MessageBox.Show(ex.Message, "Error de sintáxis");
             }
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // Cargar una lista de todos los archivos TXT dentro del directorio ./Examples
+            var examples = System.IO.Directory.GetFiles("./Examples", "*.txt");
+
+            // Llenar el combo box con los nombres de los archivos.
+            foreach (var example in examples)
+            {
+                cmbExamples.Items.Add(System.IO.Path.GetFileName(example));
+            }
+
+            // Seleccionar de manera automáticamente el primer archivo.
+            cmbExamples.SelectedIndex = 0;
+
+            // Cargar el archivo.
+            LoadActiveExample();
+        }
+
+        private void cmdLoad_Click(object sender, EventArgs e)
+        {
+            LoadActiveExample();
+        }
+
+        private void LoadActiveExample()
+        {
+            // Verificar si existe un elemento del combobox seleccionado.
+            if (cmbExamples.SelectedItem == null)
+            {
+                return;
+            }
+
+            // Cada elemento del combobox es el nombre del archivo.
+            // Verificar si existe en el directorio, antes de abrir.
+            var example = $"./Examples/{cmbExamples.SelectedItem}";
+
+            if (!System.IO.File.Exists(example))
+            {
+                return;
+            }
+
+            // Cargar el contenido del archivo en el cuadro de texto txtCode.
+            txtCode.Text = System.IO.File.ReadAllText(example);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Compiladores.US.LexicalAnalyzer
         /// <summary>
         /// VAR
         /// </summary>
-        Var,
+        KeywordSet,
         KeywordConst,
         KeywordIn,
         KeywordAs,
@@ -33,12 +33,12 @@ namespace Compiladores.US.LexicalAnalyzer
         /// <summary>
         /// FLOAT
         /// </summary>
-        TypeFloat,
+        Float,
 
         /// <summary>
         /// INTEGER
         /// </summary>
-        TypeInteger,
+        Integer,
 
         /// <summary>
         /// CHAR
@@ -91,5 +91,11 @@ namespace Compiladores.US.LexicalAnalyzer
         Number,
         Character,
         EOF,
+        KeywordType,
+
+        /// <summary>
+        /// TYPE
+        /// </summary>
+        Type,
     }
 }

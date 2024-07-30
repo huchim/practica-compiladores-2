@@ -10,7 +10,7 @@ namespace Compiladores.US.SyntaxAnalyzer.Expressions
         public FloatLiteral(Token token) : base(token, NodeType.FloatLiteral)
         {
             // Verificar que el token sea un literal entero.
-            if (token.Category.TokenType != TokenType.TypeFloat)
+            if (token.Category.TokenType != TokenType.Float)
             {
                 throw new System.Exception("Unexpected token");
             }

@@ -59,6 +59,7 @@
     <Compile Include="US\LexicalAnalyzer\OnTokenFoundEventHandler.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\AssignmentExpression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\BinaryExpression.cs" />
+    <Compile Include="US\SyntaxAnalyzer\Expressions\DeclarationExpression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\Expression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\Identifier.cs" />
     <Compile Include="US\SyntaxAnalyzer\Statements\ExpressionStatement.cs" />
@@ -107,6 +108,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Examples\Example1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\Example4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\Example3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\Example2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Grammar.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
