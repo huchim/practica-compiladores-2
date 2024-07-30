@@ -13,19 +13,10 @@ namespace Compiladores.US.LexicalAnalyzer
     {
         private readonly StreamReader _stream;
 
-        /// <summary>
-        ///  Posición actual.
-        /// </summary>
-        private int _chx;
         public SourceCode(Stream stream)
         {
             _stream = new StreamReader(stream);
         }
-
-        /// <summary>
-        ///  Obtiene el código.
-        /// </summary>
-        public string Code { get; }
 
         public static SourceCode CreateFromString(string content)
         {
@@ -39,21 +30,6 @@ namespace Compiladores.US.LexicalAnalyzer
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
             return new SourceCode(stream);
-        }
-
-        /// <summary>
-        ///  Devuelve el caracter en la posición especificada en <paramref name="index"/>.
-        /// </summary>
-        /// <param name="index">Posicióne esperada.</param>
-        /// <returns>El carácter en la posición esperada.</returns>
-        internal char CharAt(int index)
-        {
-            if (index > Code.Length - 1 || index < 0)
-            {
-                return '\0';
-            }
-
-            return Code[index];
         }
 
         internal IEnumerable<Lexema> GetLexemas()
