@@ -1,5 +1,9 @@
-﻿namespace Compiladores.US
+﻿using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+
+namespace Compiladores.US.LexicalAnalyzer
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     internal enum TokenType
     {
         Keyword,
@@ -17,9 +21,24 @@
         KeywordIn,
         KeywordAs,
 
+        /// <summary>
+        /// ID
+        /// </summary>
         Identifier,
+
+        /// <summary>
+        /// FLOAT
+        /// </summary>
         TypeFloat,
-        TypeInt,
+
+        /// <summary>
+        /// INTEGER
+        /// </summary>
+        TypeInteger,
+
+        /// <summary>
+        /// CHAR
+        /// </summary>
         TypeChar,
         Comma,
         Semicolon,
@@ -33,10 +52,25 @@
 
         OperatorPlus,
         OperatorMinus,
+
+        /// <summary>
+        /// MUL
+        /// </summary>
         OperatorMultiply,
+        
+        /// <summary>
+        /// DIV
+        /// </summary>
         OperatorDivide,
 
+        /// <summary>
+        /// LPAREN
+        /// </summary>
         OpenParenthesis,
+
+        /// <summary>
+        /// RPAREN
+        /// </summary>
         CloseParenthesis,
         OpenBrace,
         CloseBrace,

@@ -1,0 +1,22 @@
+﻿using Compiladores.US.LexicalAnalyzer;
+
+namespace Compiladores.US.SyntaxAnalyzer
+{
+    internal class Node
+    {
+        public Node(NodeType kind)
+        {
+            Kind = kind;
+        }
+
+        public static Node Empty => new Node(NodeType.Empty);
+
+        public int Start { get; set; }
+
+        public int End { get; set; }
+
+        public SourceLocation Location { get; set; }
+
+        public NodeType Kind { get; }
+    }
+}

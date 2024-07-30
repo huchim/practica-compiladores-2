@@ -1,4 +1,4 @@
-﻿namespace Compiladores.US
+﻿namespace Compiladores.US.LexicalAnalyzer
 {
     internal class TokenPosition
     {

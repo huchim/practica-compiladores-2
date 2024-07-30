@@ -1,12 +1,19 @@
 ﻿using System;
 
-namespace Compiladores.US
+namespace Compiladores.US.LexicalAnalyzer
 {
     internal class Token
     {
-        public Token(int start, int endIndex, TokenDefinition symbol = null)
+        public Token(TokenDefinition tokenDefinition, SourceLocation word) : this(word.Position.StartIndex, word.Position.Length, tokenDefinition, word)
+        {
+
+        }
+
+        [Obsolete("Utilizar el constructor con SourceCodeWord")]
+        public Token(int start, int endIndex, TokenDefinition symbol = null, SourceLocation lexema = null)
         {
             Symbol = symbol;
+            Lexema = lexema;
             Length = endIndex - start;
             StartIndex = start;
         }
@@ -22,6 +29,7 @@ namespace Compiladores.US
         /// Obtiene el simbolo terminal asociado.
         /// </summary>
         public TokenDefinition Symbol { get; }
+        public SourceLocation Lexema { get; }
 
         /// <summary>
         ///  Obtiene la longitud del token.

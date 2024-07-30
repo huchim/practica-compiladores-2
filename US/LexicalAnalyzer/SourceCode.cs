@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Compiladores.US
+namespace Compiladores.US.LexicalAnalyzer
 {
     /// <summary>
     /// Representa el código fuente que se va a analizar.
@@ -80,7 +80,7 @@ namespace Compiladores.US
             return Code.Substring(startIndex, token.Length);
         }
 
-        internal IEnumerable<SourceCodeWord> GetLexemas()
+        internal IEnumerable<SourceLocation> GetLexemas()
         {
             // Iterar sobre cada carácter del contenido para recuperar todas las palabras,
             // cada palabra se separa por un espacio en blanco o un salto de línea.
@@ -128,7 +128,7 @@ namespace Compiladores.US
                         stringLiteralIsOpen = false;
 
                         // Hay que devolver la palabra acumulada.
-                        yield return new SourceCodeWord(currentWord.ToString(), position - currentWord.Length);
+                        yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
                         currentWord.Clear();
                     }
 
@@ -151,11 +151,11 @@ namespace Compiladores.US
                     if (currentWord.Length > 0)
                     {
                         // La posición debe retroceder con respecto al tamaño de la palabra.
-                        yield return new SourceCodeWord(currentWord.ToString(), position - currentWord.Length);
+                        yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
                     }
 
                     // Devolvemos la palabra.
-                    yield return new SourceCodeWord(c.ToString(), position);
+                    yield return new SourceLocation(c.ToString(), position);
 
                     // Limpiamos el búfer.
                     currentWord.Clear();
@@ -176,7 +176,7 @@ namespace Compiladores.US
                 if (currentWord.Length > 0)
                 {
                     // La posición debe retroceder con respecto al tamaño de la palabra.
-                    yield return new SourceCodeWord(currentWord.ToString(), position - currentWord.Length);
+                    yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
 
                     // Limpiamos el búfer.
                     currentWord.Clear();
@@ -186,7 +186,7 @@ namespace Compiladores.US
             // Devolver la última palabra en caso de que no esté vacía.
             if (currentWord.Length > 0)
             {
-                yield return new SourceCodeWord(currentWord.ToString(), position - currentWord.Length + 1);
+                yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length + 1);
             }
 
             // Lanzar un error si se ha quedado una cadena abierta.

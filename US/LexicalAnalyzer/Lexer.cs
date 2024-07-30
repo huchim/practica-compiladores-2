@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-namespace Compiladores.US
+namespace Compiladores.US.LexicalAnalyzer
 {
     /// <summary>
     /// Representa un analizador léxico.
     /// </summary>
-    internal class Scanner
+    internal class Lexer
     {
         /// <summary>
         /// Define los patrones que deben incluir cada token.
         /// </summary>
         private readonly List<TokenDefinition> _tokenDefinitions;
 
-        public Scanner()
+        public Lexer()
         {
             // Cada token se compone de un lexema y un tipo de token: 1|NUMBER, +|OPERATOR, +|PLUS.
             _tokenDefinitions = new List<TokenDefinition>() {
@@ -38,7 +37,7 @@ namespace Compiladores.US
 
                 TokenDefinition.Factory.Create(TokenType.Identifier, "^[_a-zA-Z][_a-zA-Z0-9]*$"),
                 TokenDefinition.Factory.Create(TokenType.TypeFloat, "^[0-9]+.[0-9]+$"),
-                TokenDefinition.Factory.Create(TokenType.TypeInt, "^[0-9]+$"),
+                TokenDefinition.Factory.Create(TokenType.TypeInteger, "^[0-9]+$"),
                 TokenDefinition.Factory.Create(TokenType.Number, "^[0-9]$"),
                 TokenDefinition.Factory.Create(TokenType.Character, "^[a-zA-Z]$"),
 
@@ -79,9 +78,9 @@ namespace Compiladores.US
                 var tokenFound = false;
 
                 // Recorremos cada elemento del vocabulario.
-                foreach (var symbol in _tokenDefinitions)
+                foreach (var tokenDefinition in _tokenDefinitions)
                 {
-                    if (!symbol.Regex.IsMatch(lexema.Value))
+                    if (!tokenDefinition.Regex.IsMatch(lexema.Source))
                     {
                         // No se encontró un simbolo, continuamos con el siguiente.
                         continue;
@@ -89,10 +88,12 @@ namespace Compiladores.US
 
                     // Si se encontró
                     tokenFound = true;
-                    yield return new Token(
-                        lexema.TokenPosition.StartIndex,
-                        lexema.TokenPosition.StartIndex + lexema.TokenPosition.Length,
-                        symbol);
+
+                    // La definición del token nos permite definirlo dentro del vocabulario, pero poder ignorarlo.
+                    if (!tokenDefinition.IsIgnored)
+                    {
+                        yield return new Token(tokenDefinition, lexema);
+                    }
 
                     break;
                 }

@@ -33,12 +33,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtTokens = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.AstTreeView = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.txtCode = new System.Windows.Forms.TextBox();
             this.cmdParse = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.astCode = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -101,8 +101,8 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.AstTreeView, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.astCode, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(346, 208);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -111,14 +111,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(338, 253);
             this.tableLayoutPanel2.TabIndex = 6;
-            // 
-            // AstTreeView
-            // 
-            this.AstTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AstTreeView.Location = new System.Drawing.Point(3, 43);
-            this.AstTreeView.Name = "AstTreeView";
-            this.AstTreeView.Size = new System.Drawing.Size(332, 207);
-            this.AstTreeView.TabIndex = 12;
             // 
             // label1
             // 
@@ -183,6 +175,16 @@
             this.label3.TabIndex = 15;
             this.label3.Text = "Números, +, -, Paréntesis, Espacios.\r\n\r\n1+2\r\n1+(4+2)\r\n1+((3+1)+2)+5";
             // 
+            // astCode
+            // 
+            this.astCode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.astCode.Location = new System.Drawing.Point(3, 43);
+            this.astCode.Multiline = true;
+            this.astCode.Name = "astCode";
+            this.astCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.astCode.Size = new System.Drawing.Size(332, 207);
+            this.astCode.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,10 +213,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TreeView AstTreeView;
         private System.Windows.Forms.TextBox txtCode;
         private System.Windows.Forms.Button cmdParse;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox astCode;
     }
 }
 
