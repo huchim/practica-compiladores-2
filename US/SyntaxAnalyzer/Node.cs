@@ -11,10 +11,6 @@ namespace Compiladores.US.SyntaxAnalyzer
 
         public static Node Empty => new Node(NodeType.Empty);
 
-        public int Start { get; set; }
-
-        public int End { get; set; }
-
         public Lexema Location { get; set; }
 
         public NodeType Kind { get; }

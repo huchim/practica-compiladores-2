@@ -13,6 +13,11 @@ namespace Compiladores.US.LexicalAnalyzer
         /// </summary>
         private readonly List<TokenDefinition> _tokenDefinitions;
 
+        /// <summary>
+        /// Evento que se emite cuando es detectado un nuevo token.
+        /// </summary>
+        public event OnTokenFoundEventHandler OnTokenFound;
+
         public Lexer()
         {
             // Cada token se compone de un lexema y un tipo de token: 1|NUMBER, +|OPERATOR, +|PLUS.
@@ -92,7 +97,12 @@ namespace Compiladores.US.LexicalAnalyzer
                     // La definición del token nos permite definirlo dentro del vocabulario, pero poder ignorarlo.
                     if (!tokenDefinition.IsIgnored)
                     {
-                        yield return new Token(tokenDefinition, lexema);
+                        var token = new Token(tokenDefinition, lexema);
+
+                        // Invocamos el evento en caso de ser necesario.
+                        OnTokenFound?.Invoke(this, new OnTokenFoundEventArgs(token));
+
+                        yield return token;
                     }
 
                     break;
