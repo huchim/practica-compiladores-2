@@ -9,7 +9,9 @@
 
 ![image-20240628152656466](assets/image-20240628152656466.png)
 
-El primer cuadro es para introducir el código fuente, el segundo de símbolos muestra cada simbolo que fue extraído del código. Por último el árbol de sintáxis, muestra únicamente cada nodo y sus hijos. La aplicación fue hecha en Windows Forms (.NET Framework 4.8).
+## Instrucciones
+
+El primer cuadro es para introducir el código fuente. La aplicación fue hecha en Windows Forms (.NET Framework 4.8).
 
 
 
