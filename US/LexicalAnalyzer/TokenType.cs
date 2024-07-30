@@ -16,6 +16,10 @@ namespace Compiladores.US.LexicalAnalyzer
         KeywordWhile,
         KeywordFn,
         KeywordReturn,
+
+        /// <summary>
+        /// VAR
+        /// </summary>
         Var,
         KeywordConst,
         KeywordIn,
@@ -41,6 +45,10 @@ namespace Compiladores.US.LexicalAnalyzer
         /// </summary>
         TypeChar,
         Comma,
+
+        /// <summary>
+        /// SEMI
+        /// </summary>
         Semicolon,
 
         Assignment,
@@ -82,5 +90,6 @@ namespace Compiladores.US.LexicalAnalyzer
         LineBreak,
         Number,
         Character,
+        EOF,
     }
 }

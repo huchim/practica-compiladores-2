@@ -76,7 +76,6 @@ namespace Compiladores.US.LexicalAnalyzer
         internal IEnumerable<Token> Tokenize(SourceCode sourceCode)
         {
             // Recorremos el código fuente hasta que se termine.
-            Console.WriteLine("Recorriendo cada lexema del código fuente.");
             foreach (var lexema in sourceCode.GetLexemas())
             {
                 // Indica si al final el texto acumulado es válido dentro de la lista de simbolos.
@@ -113,6 +112,9 @@ namespace Compiladores.US.LexicalAnalyzer
                     throw new Exception($"Token no reconocido");
                 }
             }
+
+            // Enviamos un token de EOF
+            yield return new Token(TokenDefinition.Factory.Create(TokenType.EOF, string.Empty), null);
         }
     }
 }

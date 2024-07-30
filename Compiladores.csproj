@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="US\LexicalAnalyzer\OnTokenFoundEventArgs.cs" />
     <Compile Include="US\LexicalAnalyzer\OnTokenFoundEventHandler.cs" />
+    <Compile Include="US\SyntaxAnalyzer\Expressions\AssignmentExpression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\BinaryExpression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\Expression.cs" />
     <Compile Include="US\SyntaxAnalyzer\Expressions\Identifier.cs" />

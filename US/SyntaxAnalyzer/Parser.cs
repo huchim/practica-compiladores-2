@@ -1,5 +1,6 @@
 ﻿using Compiladores.US.LexicalAnalyzer;
 using Compiladores.US.SyntaxAnalyzer.Expressions;
+using System;
 using System.Collections.Generic;
 
 namespace Compiladores.US.SyntaxAnalyzer
@@ -33,9 +34,13 @@ namespace Compiladores.US.SyntaxAnalyzer
             // Creamos el programa.
             var program = new Program();
 
+            // Inicializamos el enumerador.
             _tokens.MoveNext();
 
-            program.Body.Add(Expr());
+            while (!Peek().IsEOF)
+            {
+                program.Body.Add(StatementExpr());
+            }
 
             return program;
         }
@@ -74,7 +79,7 @@ namespace Compiladores.US.SyntaxAnalyzer
                     return new Identifier(token);
 
                 default:
-                    throw new System.Exception("Unexpected token");
+                    throw new System.Exception("Unexpected token: " + token.Category.TokenType);
             }
         }
 
@@ -103,6 +108,49 @@ namespace Compiladores.US.SyntaxAnalyzer
             }
 
             return node;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// compound : var | expr
+        /// </remarks>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
+        private Node StatementExpr()
+        {
+            switch (Peek().Category.TokenType)
+            {
+                case TokenType.Var:
+                    return Assign();
+                default:
+                    return Expr();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// var : ID ASSIGN expr SEMI
+        /// </remarks>
+        /// <returns></returns>
+        private Node Assign()
+        {
+            Eat(TokenType.Var);
+
+            var id = new Identifier(Pop());
+            Eat(TokenType.Assignment);
+
+            var right = Expr();
+            Eat(TokenType.Semicolon);
+
+            return new AssignmentExpression()
+            {
+                Left = id,
+                Right = right as Expression,
+            };
         }
 
         /// <summary>
@@ -152,7 +200,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         }
 
         /// <summary>
-        /// Devuelve el siguiente token sin avanzar el enumerador.
+        /// Devuelve el token actual sin avanzar el enumerador.
         /// </summary>
         /// <returns></returns>
         private Token Peek()

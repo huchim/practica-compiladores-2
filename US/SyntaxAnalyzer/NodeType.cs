@@ -15,5 +15,6 @@ namespace Compiladores.US.SyntaxAnalyzer
         Literal,
         BinaryExpression,
         Empty,
+        AssignmentExpression,
     }
 }

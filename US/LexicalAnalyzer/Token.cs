@@ -25,5 +25,10 @@
         /// Obtiene o establece el lexema.
         /// </summary>
         public Lexema Lexema { get; }
+
+        /// <summary>
+        /// Obtiene un valor que indica si el token es el final del archivo.
+        /// </summary>
+        public bool IsEOF => Category.TokenType == TokenType.EOF;
     }
 }
