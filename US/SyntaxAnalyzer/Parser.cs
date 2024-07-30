@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Compiladores.US.SyntaxAnalyzer
 {
+    /// <summary>
+    /// Representa el analizador léxico.
+    /// </summary>
     internal class Parser
     {
         private readonly IEnumerator<Token> _tokens;
