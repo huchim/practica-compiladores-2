@@ -10,7 +10,7 @@ namespace Compiladores.US.SyntaxAnalyzer.Expressions
         /// <param name="token">Token que representa el identificador.</param>
         public Identifier(Token token) : base(NodeType.Identifier)
         {
-            Name = token.Name;
+            Name = token.Lexema.Value;
         }
 
         public string Name { get; }

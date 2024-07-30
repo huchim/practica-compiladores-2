@@ -80,7 +80,7 @@ namespace Compiladores.US.LexicalAnalyzer
                 // Recorremos cada elemento del vocabulario.
                 foreach (var tokenDefinition in _tokenDefinitions)
                 {
-                    if (!tokenDefinition.Regex.IsMatch(lexema.Source))
+                    if (!tokenDefinition.Regex.IsMatch(lexema.Value))
                     {
                         // No se encontró un simbolo, continuamos con el siguiente.
                         continue;

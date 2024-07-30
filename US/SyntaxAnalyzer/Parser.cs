@@ -49,7 +49,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         {
             var token = Peek();
 
-            switch (token.Symbol.TokenType)
+            switch (token.Category.TokenType)
             {
                 case TokenType.OpenParenthesis:
                     Eat(TokenType.OpenParenthesis);
@@ -86,7 +86,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         {
             var node = Factor();
 
-            while (Peek().Symbol.TokenType == TokenType.OperatorMultiply || Peek().Symbol.TokenType == TokenType.OperatorDivide)
+            while (Peek().Category.TokenType == TokenType.OperatorMultiply || Peek().Category.TokenType == TokenType.OperatorDivide)
             {
                 var token = Pop();
                 var right = Factor();
@@ -94,7 +94,7 @@ namespace Compiladores.US.SyntaxAnalyzer
                 node = new BinaryExpression()
                 {
                     Left = node as Expression,
-                    Operator = token.Symbol.TokenType,
+                    Operator = token.Category.TokenType,
                     Right = right as Expression,
                 };
             }
@@ -115,7 +115,7 @@ namespace Compiladores.US.SyntaxAnalyzer
         {
             var node = Term();
 
-            while (Peek().Symbol.TokenType == TokenType.OperatorPlus || Peek().Symbol.TokenType == TokenType.OperatorMinus)
+            while (Peek().Category.TokenType == TokenType.OperatorPlus || Peek().Category.TokenType == TokenType.OperatorMinus)
             {
                 var token = Pop();
                 var right = Term();
@@ -123,7 +123,7 @@ namespace Compiladores.US.SyntaxAnalyzer
                 node = new BinaryExpression()
                 {
                     Left = node as Expression,
-                    Operator = token.Symbol.TokenType,
+                    Operator = token.Category.TokenType,
                     Right = right as Expression,
                 };
             }
@@ -140,9 +140,9 @@ namespace Compiladores.US.SyntaxAnalyzer
         {
             var token = Peek();
 
-            if (token.Symbol.TokenType != tokenType)
+            if (token.Category.TokenType != tokenType)
             {
-                throw new System.Exception($"Unexpected token, expected {tokenType} but {token.Symbol.TokenType}");
+                throw new System.Exception($"Unexpected token, expected {tokenType} but {token.Category.TokenType}");
             }
 
             Pop();

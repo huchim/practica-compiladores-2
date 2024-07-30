@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Compiladores.US.LexicalAnalyzer
 {
@@ -27,16 +26,6 @@ namespace Compiladores.US.LexicalAnalyzer
         ///  Obtiene el código.
         /// </summary>
         public string Code { get; }
-
-        /// <summary>
-        /// Obtiene el carácter actual.
-        /// </summary>
-        public string Current => CharAt(_chx).ToString();
-
-        /// <summary>
-        ///  Obtiene la posición actual del cursor.
-        /// </summary>
-        internal int Position => _chx;
 
         public static SourceCode CreateFromString(string content)
         {
@@ -67,20 +56,7 @@ namespace Compiladores.US.LexicalAnalyzer
             return Code[index];
         }
 
-        /// <summary>
-        ///  Extrae una porción del código de acuerdo al token proporcionado.
-        /// </summary>
-        /// <param name="token">Información del token.</param>
-        /// <returns>Una porción del código.</returns>
-        internal string Extract(Token token)
-        {
-            int startIndex = token.StartIndex;
-
-            // Devolver un subconjunto del código, de acuerdo a la posición inicial y la longitud.
-            return Code.Substring(startIndex, token.Length);
-        }
-
-        internal IEnumerable<SourceLocation> GetLexemas()
+        internal IEnumerable<Lexema> GetLexemas()
         {
             // Iterar sobre cada carácter del contenido para recuperar todas las palabras,
             // cada palabra se separa por un espacio en blanco o un salto de línea.
@@ -128,7 +104,7 @@ namespace Compiladores.US.LexicalAnalyzer
                         stringLiteralIsOpen = false;
 
                         // Hay que devolver la palabra acumulada.
-                        yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
+                        yield return new Lexema(currentWord.ToString(), position - currentWord.Length);
                         currentWord.Clear();
                     }
 
@@ -151,11 +127,11 @@ namespace Compiladores.US.LexicalAnalyzer
                     if (currentWord.Length > 0)
                     {
                         // La posición debe retroceder con respecto al tamaño de la palabra.
-                        yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
+                        yield return new Lexema(currentWord.ToString(), position - currentWord.Length);
                     }
 
                     // Devolvemos la palabra.
-                    yield return new SourceLocation(c.ToString(), position);
+                    yield return new Lexema(c.ToString(), position);
 
                     // Limpiamos el búfer.
                     currentWord.Clear();
@@ -176,7 +152,7 @@ namespace Compiladores.US.LexicalAnalyzer
                 if (currentWord.Length > 0)
                 {
                     // La posición debe retroceder con respecto al tamaño de la palabra.
-                    yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length);
+                    yield return new Lexema(currentWord.ToString(), position - currentWord.Length);
 
                     // Limpiamos el búfer.
                     currentWord.Clear();
@@ -186,7 +162,7 @@ namespace Compiladores.US.LexicalAnalyzer
             // Devolver la última palabra en caso de que no esté vacía.
             if (currentWord.Length > 0)
             {
-                yield return new SourceLocation(currentWord.ToString(), position - currentWord.Length + 1);
+                yield return new Lexema(currentWord.ToString(), position - currentWord.Length + 1);
             }
 
             // Lanzar un error si se ha quedado una cadena abierta.
@@ -194,51 +170,6 @@ namespace Compiladores.US.LexicalAnalyzer
             {
                 throw new Exception("Se esperaba una comilla doble.");
             }
-        }
-
-        /// <summary>
-        ///  Devuelve un valor que indica si ha finalizado el documento.
-        /// </summary>
-        /// <returns>Devuelve <see langword="true"/> si el documento ha finalizado.</returns>
-        internal bool IsEOF()
-        {
-            return CharAt(_chx) == '\0';
-        }
-
-        /// <summary>
-        /// Devuelve un valor que indica si el carácter actual es un espacio en blanco.
-        /// </summary>
-        /// <returns>Devuelve <see langword="true"/> si el carácter es un espacio en blanco.</returns>
-        internal bool IsWhiteSpace()
-        {
-            return char.IsWhiteSpace(CharAt(_chx));
-        }
-
-        /// <summary>
-        ///  Mueve el cursor una posición hacia adelante.
-        /// </summary>
-        internal void Move()
-        {
-            _chx++;
-        }
-
-        /// <summary>
-        ///  Mueve el cursor hacia adelante.
-        /// </summary>
-        /// <param name="positions">Posiciones a mover.</param>
-        internal void Move(int positions)
-        {
-            _chx += positions;
-        }
-
-        /// <summary>
-        ///  Devuelve un valor que indica si aún queda espacio para el siguiente elemento.
-        /// </summary>
-        /// <param name="v">Cantidad de caracteres</param>
-        /// <returns>Devuelve <see langword="true"/> si el documento aún tiene espacio.</returns>
-        internal bool R(int v)
-        {
-            return Code.Length - _chx >= v;
         }
 
         /// <summary>

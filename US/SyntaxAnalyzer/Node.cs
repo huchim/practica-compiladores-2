@@ -15,7 +15,7 @@ namespace Compiladores.US.SyntaxAnalyzer
 
         public int End { get; set; }
 
-        public SourceLocation Location { get; set; }
+        public Lexema Location { get; set; }
 
         public NodeType Kind { get; }
     }

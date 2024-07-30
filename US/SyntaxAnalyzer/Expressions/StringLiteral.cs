@@ -10,7 +10,7 @@ namespace Compiladores.US.SyntaxAnalyzer.Expressions
         public StringLiteral(Token token) : base(token, NodeType.StringLiteral)
         {
             // Verificar que el token sea un literal de cadena.
-            if (token.Symbol.TokenType != TokenType.TypeChar)
+            if (token.Category.TokenType != TokenType.TypeChar)
             {
                 throw new System.Exception("Unexpected token");
             }

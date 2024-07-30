@@ -10,7 +10,7 @@ namespace Compiladores.US.SyntaxAnalyzer.Expressions
         public IntegerLiteral(Token token) : base(token, NodeType.IntegerLiteral)
         {
             // Verificar que el token sea un literal entero.
-            if (token.Symbol.TokenType != TokenType.TypeInteger)
+            if (token.Category.TokenType != TokenType.TypeInteger)
             {
                 throw new System.Exception("Unexpected token");
             }

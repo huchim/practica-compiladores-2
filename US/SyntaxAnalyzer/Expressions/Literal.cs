@@ -10,7 +10,7 @@ namespace Compiladores.US.SyntaxAnalyzer.Expressions
         /// <param name="token">Token que representa el literal.</param>
         public Literal(Token token, NodeType nodeType = NodeType.Literal) : base(nodeType)
         {
-            Raw = token.Lexema.Source;
+            Raw = token.Lexema.Value;
         }
 
         public string Raw { get; }

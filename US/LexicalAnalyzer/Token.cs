@@ -1,54 +1,29 @@
-﻿using System;
-
-namespace Compiladores.US.LexicalAnalyzer
+﻿namespace Compiladores.US.LexicalAnalyzer
 {
+    /// <summary>
+    /// Representa un token que corresponde a un lexema y su clasificación.
+    /// </summary>
     internal class Token
     {
-        public Token(TokenDefinition tokenDefinition, SourceLocation word) : this(word.Position.StartIndex, word.Position.Length, tokenDefinition, word)
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="Token"/>.
+        /// </summary>
+        /// <param name="tokenDefinition">Definición del token.</param>
+        /// <param name="word">Ubicación del código.</param>
+        public Token(TokenDefinition tokenDefinition, Lexema word)
         {
-
-        }
-
-        [Obsolete("Utilizar el constructor con SourceCodeWord")]
-        public Token(int start, int endIndex, TokenDefinition symbol = null, SourceLocation lexema = null)
-        {
-            Symbol = symbol;
-            Lexema = lexema;
-            Length = endIndex - start;
-            StartIndex = start;
-        }
-
-        public Token(int start, TokenDefinition symbol = null)
-        {
-            Symbol = symbol;
-            Length = 5;
-            StartIndex = start;
+            Category = tokenDefinition;
+            Lexema = word;
         }
 
         /// <summary>
-        /// Obtiene el simbolo terminal asociado.
+        /// Obtiene la clasificación del lexema.
         /// </summary>
-        public TokenDefinition Symbol { get; }
-        public SourceLocation Lexema { get; }
+        public TokenDefinition Category { get; }
 
         /// <summary>
-        ///  Obtiene la longitud del token.
+        /// Obtiene o establece el lexema.
         /// </summary>
-        public int Length { get; private set; }
-
-        /// <summary>
-        ///  Obtiene el nombre de este token.
-        /// </summary>
-        public string Name => Symbol.TokenType.ToString();
-
-        /// <summary>
-        ///  Obtiene el índice inicial dentro de la oración.
-        /// </summary>
-        public int StartIndex { get; }
-
-        public void UpdateLength(int length)
-        {
-            Length = length;
-        }
+        public Lexema Lexema { get; }
     }
 }

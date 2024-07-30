@@ -2,6 +2,9 @@
 
 namespace Compiladores.US.LexicalAnalyzer
 {
+    /// <summary>
+    /// Representa una definición de un patrón asociado a un token.
+    /// </summary>
     internal sealed class TokenDefinition
     {
         /// <summary>
